@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Search - Restaurant A</title>
+	
+	<style>
+			#pos{
+				position: relative;
+			}
+			body {
+			font-size: .875rem;
+			}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 0;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 48px; /* Height of navbar */
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+	</style>
+		
+		<script type="text/javascript">
+		//need node.js to properly change the search layout dynamically, but it would look similar to this
+		window.onload=function(){
+			var price = document.forms["money"].elements["price"];
+			for(var i=0, max=price.length; i<max; i++){
+				price[i].onclick=function(){
+					//alert(this.value);
+				}
+			}
+			
+			var sort = document.forms["sortby"].elements["sort"];
+			for(var i=0, max=sort.length; i<max; i++){
+				sort[i].onclick=function(){
+					//alert(this.value);
+				}
+			}
+		}
+		</script>
+  </head>
+<body>
+	<div class="d-flex flex-column flex-md-row bg-white border-bottom box-shadow">
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary p-2">
+      <a class="navbar-brand" href="#">Website Name</a>
+
+      <div class="navbar-collapse">
+	  
+        <ul class="navbar-nav px-3 mr-auto p-2">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">My Reviews</a>
+              <a class="dropdown-item" href="#">Sign Out</a>
+            </div>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Restaurant A" aria-label="Search">
+          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+	</div>
+	
+    <div class="container-fluid" id="pos">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Filters</span>
+			  <!-- for filters, only price and sort by will change the order in the search, allergies and hours will just include or not include results -->
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <p class="nav-link">
+                  Price
+                </p>
+				<p>
+				<form method="POST" action="" name="money">
+					<input type="radio" name="price" value="1">$<br/>
+					<input type="radio" name="price" value="2">$$<br/>
+					<input type="radio" name="price" value="3">$$$<br/><br/>
+				</form>
+				</p>
+              </li>
+              <li class="nav-item">
+                <p class="nav-link">
+                  Allergies
+                </p>
+				<p>
+					<input type="checkbox" name="allergy">Dairy<br/>
+					<input type="checkbox" name="allergy">Peanut<br/><br/>
+					<label>Add an allergy to this search:</label>
+					<input type="text" name="allergy" list="allergies"/>
+					<datalist id="allergies">
+						<option>Almond</option>
+						<option>Egg</option>
+						<option>Fish</option>
+						<option>Gluten</option>
+						<option>Margarine</option>
+						<option>Pine nut</option>
+						<option>Soy</option>
+						<option>Vegan</option>
+						<option>Walnut</option>
+					</datalist>
+					<button type="button">Add</button> <!-- add node.js functionality later to add the allergy to the checkbox list above -->
+				</p>
+				
+              </li>
+              <li class="nav-item">
+                <p class="nav-link">
+                  Hours
+                </p>
+				<input type="checkbox" name="hours">Open Now<br/><br/>
+              </li>
+              <li class="nav-item">
+                <p class="nav-link">
+                  Sort By
+                </p>
+				<p>
+				<form method="POST" action="" name="sortby">
+					<input type="radio" name="sort" value="1">Most Reviews<br/>
+					<input type="radio" name="sort" value="2">Highest Rated<br/>
+				</form>
+				</p>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+
+          <canvas class="my-4 chartjs-render-monitor" id="myChart" width="732" height="308" style="display: block; height: 5px; width: 586px;"></canvas>
+
+          <h2>Search Results</h2>
+		  
+		  <div class="my-3 p-3 bg-white rounded box-shadow">
+		  
+        <div class="media text-muted pt-3">
+          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark"><a class="text-info" style="font-size:1rem" href="#">Restaurant A</a></strong>
+            <a class="text-dark" href="#">Back Bay</a><br/> <!-- show maps -->
+			&#9733;&#9733;&#9733;&#9733;&#9733; 12 Reviews<br/>
+			$$</br>
+			<a href="#">Vegan, Gluten-free options</a>
+          </p>
+        </div>
+		
+        <div class="media text-muted pt-3">
+          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark"><a class="text-info" style="font-size:1rem" href="#">Restaurant B</a></strong>
+            <a class="text-dark" href="#">Brookline</a><br/>
+			&#9733;&#9733;&#9733;&#9733;&#9734; 25 Reviews<br>
+			$$$</br>
+			<a href="#">No Nuts, Soy Alternatives, No Sugar Substitutions</a>
+          </p>
+        </div>
+		
+        <div class="media text-muted pt-3">
+          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark"><a class="text-info" style="font-size:1rem" href="#">Restaurant C</a></strong>
+            <a class="text-dark" href="#">Central Boston</a><br/>
+			&#9733;&#9733;&#9734;&#9734;&#9734; 18 Reviews<br>
+			$</br>
+			<a href="#">No Dairy Substitutions, Minimal vegan options</a>
+          </p>
+        </div>
+      </div>
+        </main>
+		
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
