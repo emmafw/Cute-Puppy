@@ -69,21 +69,50 @@
 	</style>
 		
 		<script type="text/javascript">
-		//need node.js to properly change the search layout dynamically, but it would look similar to this
+		//will need to get array info from database once we have that
 		window.onload=function(){
-			var price = document.forms["money"].elements["price"];
-			for(var i=0, max=price.length; i<max; i++){
-				price[i].onclick=function(){
-					//alert(this.value);
-				}
+			var r = ["Restaurant A","Restaurant B","Restaurant C","Restaurant D","Restaurant E"];
+			var c = ["Back Bay","Brookline","Central Boston","South Shore","Cambridge"];
+			var ra = [12,25,18,32,8]
+			var p = ["$$","$$$","$","$$","$$"]
+			var a = ["Nut Free, No Soy","No Dairy Free Alternatives, Peanut Free","Vegan, All Organic","Gluten Free Options","No Allergy Accommodations Listed"]
+			
+			//sorting
+			
+			//hmm i gotta think about this. will probably need to change how the arrays are setup
+			
+			//input array data
+			
+			var restaurants = document.getElementsByClassName("restaurant");
+			for(var i=0; i<restaurants.length;i++){
+				restaurants[i].innerHTML=r[i];
 			}
 			
-			var sort = document.forms["sortby"].elements["sort"];
-			for(var i=0, max=sort.length; i<max; i++){
-				sort[i].onclick=function(){
-					//alert(this.value);
-				}
+			
+			var cities = document.getElementsByClassName("city");
+			for(var i=0;i<cities.length;i++){
+				cities[i].innerHTML=c[i];
 			}
+			
+			
+			var ratings = document.getElementsByClassName("rate");
+			for(var i=0;i<ratings.length;i++){
+				ratings[i].innerHTML=ra[i] + " Reviews";
+			}
+			
+			
+			var price = document.getElementsByClassName("price");
+			for(var i=0; i<price.length; i++){
+				price[i].innerHTML=p[i];
+			}
+			
+			
+			var allergies = document.getElementsByClassName("allergy");
+			for(var i=0; i<allergies.length; i++){
+				allergies[i].innerHTML=a[i];
+			}
+			
+			
 		}
 		</script>
   </head>
@@ -124,13 +153,16 @@
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
                 <p class="nav-link">
-                  Price
+                  Sort By
                 </p>
 				<p>
-				<form method="POST" action="" name="money">
-					<input type="radio" name="price" value="1">$<br/>
-					<input type="radio" name="price" value="2">$$<br/>
-					<input type="radio" name="price" value="3">$$$<br/><br/>
+				<form method="POST" action="" id="sort">
+					<input type="radio" name="sort" value="1">Most Reviews<br/>
+					<input type="radio" name="sort" value="2" checked>Highest Rated<br/><br/>
+					<label>Price</label><br/>
+					<input type="radio" name="sort" value="3">$<br/>
+					<input type="radio" name="sort" value="4">$$<br/>
+					<input type="radio" name="sort" value="5">$$$<br/><br/>
 				</form>
 				</p>
               </li>
@@ -154,7 +186,7 @@
 						<option>Vegan</option>
 						<option>Walnut</option>
 					</datalist>
-					<button type="button">Add</button> <!-- add node.js functionality later to add the allergy to the checkbox list above -->
+					<button type="button">Add</button> <!-- add js maybe node.js stuff later to add the allergy to the checkbox list above -->
 				</p>
 				
               </li>
@@ -163,17 +195,6 @@
                   Hours
                 </p>
 				<input type="checkbox" name="hours">Open Now<br/><br/>
-              </li>
-              <li class="nav-item">
-                <p class="nav-link">
-                  Sort By
-                </p>
-				<p>
-				<form method="POST" action="" name="sortby">
-					<input type="radio" name="sort" value="1">Most Reviews<br/>
-					<input type="radio" name="sort" value="2">Highest Rated<br/>
-				</form>
-				</p>
               </li>
             </ul>
           </div>
@@ -191,35 +212,57 @@
 		  
         <div class="media text-muted pt-3">
           <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a class="text-info" style="font-size:1rem" href="#">Restaurant A</a></strong>
-            <a class="text-dark" href="#">Back Bay</a><br/> <!-- show maps -->
-			&#9733;&#9733;&#9733;&#9733;&#9733; 12 Reviews<br/>
-			$$</br>
-			<a href="#">Vegan, Gluten-free options</a>
+            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
+            <a class="text-dark city" href="#"></a><br/> <!-- show maps on side maybe-->
+			&#9733;&#9733;&#9733;&#9733;&#9733; <span class="rate"></span><br/>
+			<span class="price">$$</span></br>
+			<a class="allergy" href="#"></a>
           </p>
         </div>
 		
         <div class="media text-muted pt-3">
           <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a class="text-info" style="font-size:1rem" href="#">Restaurant B</a></strong>
-            <a class="text-dark" href="#">Brookline</a><br/>
-			&#9733;&#9733;&#9733;&#9733;&#9734; 25 Reviews<br>
-			$$$</br>
-			<a href="#">No Nuts, Soy Alternatives, No Sugar Substitutions</a>
+            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
+            <a class="text-dark city" href="#"></a><br/>
+			&#9733;&#9733;&#9733;&#9733;&#9734; <span class="rate"></span><br>
+			<span class="price">$$$</span></br>
+			<a class="allergy" href="#"></a>
           </p>
         </div>
 		
         <div class="media text-muted pt-3">
           <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a class="text-info" style="font-size:1rem" href="#">Restaurant C</a></strong>
-            <a class="text-dark" href="#">Central Boston</a><br/>
-			&#9733;&#9733;&#9734;&#9734;&#9734; 18 Reviews<br>
-			$</br>
-			<a href="#">No Dairy Substitutions, Minimal vegan options</a>
+            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
+            <a class="text-dark city" href="#"></a><br/>
+			&#9733;&#9733;&#9734;&#9734;&#9734; <span class="rate"></span><br>
+			<span class="price">$</span></br>
+			<a class="allergy" href="#"></a>
           </p>
         </div>
+	  
+		<div class="media text-muted pt-3">
+          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
+            <a class="text-dark city" href="#"></a><br/>
+			&#9733;&#9733;&#9734;&#9734;&#9734; <span class="rate"></span><br>
+			<span class="price">$</span></br>
+			<a class="allergy" href="#"></a>
+          </p>
+        </div>
+	  
+		<div class="media text-muted pt-3">
+          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
+            <a class="text-dark city" href="#"></a><br/>
+			&#9733;&#9733;&#9734;&#9734;&#9734; <span class="rate"></span><br>
+			<span class="price">$</span></br>
+			<a class="allergy" href="#"></a>
+          </p>
+        </div>
+		
       </div>
-        </main>
+	  
+     </main>
 		
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
