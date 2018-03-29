@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Search - Restaurant A</title>
+    <title>Search - Restaurant A</title> <!-- change Restaurant A to whatever the user searched for -->
 	
 	<style>
 			#pos{
@@ -18,9 +18,9 @@
 			font-size: .875rem;
 			}
 
-/*
- * Sidebar
- */
+	/*
+	* Sidebar
+	*/
 
 .sidebar {
   position: fixed;
@@ -70,6 +70,7 @@
 		
 		<script type="text/javascript">
 		//will need to get array info from database once we have that
+		var restaurantList = [["Restaurant A","Back Bay",12,"$$","Nut Free, No Soy"],["Restaurant B","Brookline",25,"$$$","No Dairy Free Alternatives, Peanut Free"],["Restaurant C","Central Boston",18,"$","Vegan, All Organic, Dairy Free"],["Restaurant D","South Shore",32,"$","Gluten Free Options"],["Restaurant E","Cambridge",8,"$$","No Allergy Accommodations Listed"]];
 		window.onload=function(){
 			//sorting
 			handleChange();
@@ -79,7 +80,6 @@
 		function handleChange(){
 			var sortBy = document.getElementsByName('sort');
 			
-			var restaurantList = [["Restaurant A","Back Bay",12,"$$","Nut Free, No Soy"],["Restaurant B","Brookline",25,"$$$","No Dairy Free Alternatives, Peanut Free"],["Restaurant C","Central Boston",18,"$","Vegan, All Organic"],["Restaurant D","South Shore",32,"$","Gluten Free Options"],["Restaurant E","Cambridge",8,"$$","No Allergy Accommodations Listed"]];
 			//alert(restaurantList[0][0]);
 			function CompareRating(a, b){
 				if(a[2]<b[2]) return 1;
@@ -151,18 +151,37 @@
 			}
 			
 		}
+		
+		//have a value associated with each allergy tag in the database and use that to determine what to remove from the list 
+		//also need to handle when the list is less than 5 i think. i think thats the problem anyway. not sure.
+		/*function sortAllergies(){ //do this whole thing different
+			var allergies= document.getElementsByName('allergy');
+			var temp = [];
+			for(var i=0;i<allergies.length;i++){
+				if(allergies[i].checked){
+					for(var j=0;j<restaurantList.length;j++){
+						if(restaurantList[j][4].includes("Dairy Free")){
+							temp = restaurantList.indexOf(i);
+							restaurantList.splice(temp,1)
+						}
+					}
+				}
+			}
+			console.log(restaurantList);
+			//handleChange();
+		}*/
 		</script>
   </head>
 <body>
 	<div class="d-flex flex-column flex-md-row bg-white border-bottom box-shadow">
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary p-2">
-      <a class="navbar-brand" href="#">Website Name</a>
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-light p-2">
+      <a class="navbar-brand" href="#"><img src="logo_long.png"/></a>
 
       <div class="navbar-collapse">
 	  
         <ul class="navbar-nav px-3 mr-auto p-2">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+            <a class="nav-link dropdown-toggle text-primary" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="#">Profile</a>
               <a class="dropdown-item" href="#">My Reviews</a>
@@ -171,8 +190,8 @@
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Restaurant A" aria-label="Search">
-          <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+          <input class="form-control mr-sm-2" type="text" value="Restaurant A" aria-label="Search">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
     </nav>
@@ -207,8 +226,15 @@
                   Allergies
                 </p>
 				<p>
-					<input type="checkbox" name="allergy">Dairy<br/>
-					<input type="checkbox" name="allergy">Peanut<br/><br/>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" name="allergy" id="dairy" onchange="sortAllergies()" checked>
+						<label class="custom-control-label" for="dairy">Dairy</label>
+					</div>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" name="allergy" id="peanut" onchange="sortAllergies()" checked>
+						<label class="custom-control-label" for="peanut">Peanut</label>
+					</div>
+					<br/>
 					<label>Add an allergy to this search:</label>
 					<input type="text" name="allergy" list="allergies"/>
 					<datalist id="allergies">
@@ -230,7 +256,10 @@
                 <p class="nav-link">
                   Hours
                 </p>
-				<input type="checkbox" name="hours">Open Now<br/><br/>
+				<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="open">
+						<label class="custom-control-label" for="open">Open Now</label>
+					</div>
               </li>
             </ul>
           </div>
