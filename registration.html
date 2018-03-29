@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Register</h1>
+    <form method="post" class="needs-validation" action="register.php">
+        <div class="form-row justify-content-center">
+            <div class="top-rows">
+                <label>First Name</label>
+                <input type="text" class="form-control" name="firstName" placeholder="First Name" required>
+            </div>
+            <div class="top-rows">
+                <label>Last Name</label>
+                <input type="text" class="form-control" name="lastName" placeholder="Last Name" required>
+            </div>
+        </div>
+        <div class="form-row justify-content-center">
+            <div class="top-rows">
+                <label>Email</label>
+                <input type="email" class="form-control" name="email" placeholder="Email" required>
+            </div>
+            <div class="top-rows">
+                <label>Zipcode</label>
+                <input type="number" class="form-control" name = "zip" placeholder="Zipcode" min="00000" max="99999" required>
+            </div>
+        </div>
+        <div class="form-row justify-content-center">
+            <div class="top-rows">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
+            </div>
+            <div class="top-rows">
+                <label>Verify Password</label>
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
+            </div>
+        </div>
+        <div class="form-row justify-content-center">
+            <div class="bottom-row">
+                <label>Allergy</label>
+                <input type="text" class="form-control" name = "allergy" placeholder="Allergy" list="allergies" required>
+                <datalist id="allergies">
+                    <option>Milk</option>
+                    <option>Eggs</option>
+                    <option>Fish</option>
+                    <option>Shellfish</option>
+                    <option>Tree Nuts</option>
+                    <option>Peanuts</option>
+                    <option>Soy</option>
+                    <option>Wheat</option>
+                </datalist>
+            </div>
+        </div>
+        <div class="form-row justify-content-center">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                <label class="form-check-label" for="invalidCheck">
+                    Agree to terms and conditions
+                </label>
+            </div>
+        </div>
+        <div class="form-row justify-content-center">
+            <button class="btn btn-primary" type="submit">Register</button>
+        </div>
+    </form>
+</body>
+</html>
