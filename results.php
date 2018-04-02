@@ -20,13 +20,14 @@
 		if($result0->num_rows > 0){
 			$i=0;
 			while($row=$result0->fetch_assoc()){
-				$entries[$i] = array($row["Name"],$row["City"],$row["Tags"]);
+				$entries[$i] = array($row["Name"],$row["City"],$row["Tags"],$row["ID"]);
 				$i=$i+1;
 			}
 			//echo $entries[3][2];
 		}else{
 			echo "0 results";
 		}
+		
 		if($result1->num_rows>0){
 			$temp = array();
 			while($row1=$result1->fetch_assoc()){
@@ -121,7 +122,7 @@
 		<script type="text/javascript">
 		//will need to get array info from database once we have that
 		var restaurantList = [["Restaurant A","Back Bay",12,"$$","Nut Free, No Soy"],["Restaurant B","Brookline",25,"$$$","No Dairy Free Alternatives, Peanut Free"],["Restaurant C","Central Boston",18,"$","Vegan, All Organic, Dairy Free"],["Restaurant D","South Shore",32,"$","Gluten Free Options"],["Restaurant E","Cambridge",8,"$$","No Allergy Accommodations Listed"]];
-		var restaurantList0 = <?php echo json_encode($entries); ?>; //name, location, tags, number of reviews, avg rating
+		var restaurantList0 = <?php echo json_encode($entries); ?>; //name, location, tags, restaurant id, number of reviews, avg rating
 		window.onload=function(){
 			//input array data
 			
@@ -133,7 +134,6 @@
 				
 				
 			}
-			enterData();
 			handleChange();
 		
 			function create(htmlStr) {
@@ -191,10 +191,12 @@
 			
 			for(var i =0; i<restaurantList0.length;i++){
 				restaurants[i].innerHTML=restaurantList0[i][0];
+				console.log(restaurantList0[i][3]);
+				restaurants[i].href = "reviews.php?restaurantId="+restaurantList0[i][3];
 				cities[i].innerHTML=restaurantList0[i][1];
 				allergies[i].innerHTML= restaurantList0[i][2];
-				ratings[i].innerHTML=restaurantList0[i][3] + " Review(s)";
-				numr[i].innerHTML = restaurantList0[i][4] + " Stars, ";
+				ratings[i].innerHTML=restaurantList0[i][4] + " Review(s)";
+				numr[i].innerHTML = restaurantList0[i][5] + " Stars, ";
 			}
 		}
 			

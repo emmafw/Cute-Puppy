@@ -5,6 +5,9 @@
 	$conn = mysqli_connect(DBHOST,DBUSER,DBPASS,DBNAME);
 	$restaurant = "restaurant";
 	$review = "review";
+	$user = "user";
+	
+	$restId = $_GET['restaurantId'];
 	
 	$error = mysqli_connect_error();
 	if($error != null){
@@ -12,22 +15,23 @@
 		exit($output);
 	}else{
 		//do things
-		$sql0 = "SELECT * FROM " . $restaurant;
-		$sql1 = "SELECT * FROM " . $review;
+		//$sql0 = "SELECT * FROM " . $restaurant;
+		//$sql1 = "SELECT * FROM " . $review;
+		$sql0 = "SELECT * FROM `restaurant`, `review`, `user` WHERE restaurant.ID = review.RestaurantID AND user.UserID = review.UserID";
 		$result0 = mysqli_query($conn,$sql0);
-		$result1 = mysqli_query($conn,$sql1);
+		//$result1 = mysqli_query($conn,$sql1);
 		$entries = array();
-		if($result1->num_rows > 0){
-			$i=0;
-			while($row=$result1->fetch_assoc()){
-				$entries[$i] = array($row["UserID"],$row["RestaurantID"],$row["MainStars"],$row["AllergyStars"]); //,$row["Review"]); //review is too long to hold in an array
-				//$entries[$i] = array($row["Name"],$row["City"],$row["Tags"]);
-				$i=$i+1;
+		$rev = array();
+		if($result0->num_rows > 0){
+			while($row=$result0->fetch_assoc()){
+				if($restId==$row["RestaurantID"]){
+					$entries[] = array($row["FirstName"],$row["Zipcode"],$row["MainStars"],$row["AllergyStars"]); //,$row["Review"]); //review is too long to hold in an array
+					$rev[]= array($row["Review"]);
+				}
 			}
-			//echo $entries[3][2];
-		}else{
-			echo "0 results";
 		}
+		//make user id and restaurant show the real names
+		
 	}
 	mysqli_close($conn);
 ?>
@@ -104,12 +108,13 @@
 		<script type="text/javascript">
 		//will need to get array info from database once we have that
 		var restaurantList = [["User A","Back Bay",5,"What a cool place wow","Nut Free, No Soy"],["User B","Brookline",3,"Not as good as Burger King","No Dairy Free Alternatives, Peanut Free"]];
-		var userList = <?php echo json_encode($entries); ?>; //user id, restaurant id, allergy stars, review
+		var userList = <?php echo json_encode($entries); ?>; //user id, restaurant id, allergy stars
+		var review = <?php echo json_encode($rev); ?>; 
+		var restId = <?php echo ($restId); ?>;
 		//fix later to show the username rather than ID
 		window.onload=function(){
 			//sorting
 			element = document.querySelectorAll("div.insert");
-			
 			for(var i=0; i<userList.length;i++){
 				var frag = create('<div class="my-3 p-3 bg-white rounded box-shadow"><div class="media text-muted pt-3"><p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray"><strong class="d-block text-gray-dark"><a class="text-info user" style="font-size:1rem" href="#">a</a></strong><a class="text-dark city" href="#">b</a><br/><span class="main">c</span> <span class="allergy">d</span></br><a class="review" href="#">e</a></p></div></div>');
 				element[0].parentElement.insertBefore(frag,element[0].childNodes[0]);
@@ -141,10 +146,10 @@
 			
 			for(var i =0; i<userList.length;i++){
 				users[i].innerHTML=userList[i][0];
-				cities[i].innerHTML=userList[i][1];
+				cities[i].innerHTML="Location: " + userList[i][1];
 				allergies[i].innerHTML= "Allergy Review: " + userList[i][3] + " Stars";
 				mains[i].innerHTML="Main Review: " + userList[i][2] + " Stars";
-				reviews[i].innerHTML = userList[i][4];
+				reviews[i].innerHTML = review[i][0];
 			}
 			
 		}
