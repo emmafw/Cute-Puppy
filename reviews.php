@@ -3,9 +3,9 @@
 	require_once('config.php');
 	
 	$conn = mysqli_connect(DBHOST,DBUSER,DBPASS,DBNAME);
-	$restaurant = "restaurant";
-	$review = "review";
-	$user = "user";
+	//$restaurant = "restaurant";
+	//$review = "review";
+	//$user = "user";
 	
 	$restId = $_GET['restaurantId'];
 	
@@ -27,6 +27,7 @@
 				if($restId==$row["RestaurantID"]){
 					$entries[] = array($row["FirstName"],$row["Zipcode"],$row["MainStars"],$row["AllergyStars"]); //,$row["Review"]); //review is too long to hold in an array
 					$rev[]= array($row["Review"]);
+					$restaurant = array($row["Name"],$row["Address"],$row["City"],$row["Phone"]);
 				}
 			}
 		}
@@ -110,7 +111,7 @@
 		var restaurantList = [["User A","Back Bay",5,"What a cool place wow","Nut Free, No Soy"],["User B","Brookline",3,"Not as good as Burger King","No Dairy Free Alternatives, Peanut Free"]];
 		var userList = <?php echo json_encode($entries); ?>; //user id, restaurant id, allergy stars
 		var review = <?php echo json_encode($rev); ?>; 
-		var restId = <?php echo ($restId); ?>;
+		var restaurant = <?php echo json_encode($restaurant); ?>;
 		//fix later to show the username rather than ID
 		window.onload=function(){
 			//sorting
@@ -132,6 +133,14 @@
 			}
 			return frag;
 			}
+			
+			//insert restaurant info
+			var name = document.getElementById("name");
+			var address = document.getElementById("address");
+			var phone = document.getElementById("phone");
+			name.innerHTML = restaurant[0];
+			address.innerHTML = restaurant[1] + ", " + restaurant[2];
+			phone.innerHTML = restaurant[3];
 		}
 		
 		function handleChange(){
@@ -148,7 +157,7 @@
 				users[i].innerHTML=userList[i][0];
 				cities[i].innerHTML="Location: " + userList[i][1];
 				allergies[i].innerHTML= "Allergy Review: " + userList[i][3] + " Stars";
-				mains[i].innerHTML="Main Review: " + userList[i][2] + " Stars";
+				mains[i].innerHTML="Main Review: " + userList[i][2] + " Stars, ";
 				reviews[i].innerHTML = review[i][0];
 			}
 			
@@ -174,7 +183,7 @@
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" value="Restaurant A" aria-label="Search">
+          <input class="form-control mr-sm-2" type="text" value="Restaurant A" id="search" aria-label="Search">
           <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
@@ -186,16 +195,15 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
 				<h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-              <span>Restaurant A</span>
+              <span id="name">Restaurant A</span>
 				</h3>
-				<a class="text-dark sidebar-heading d-flex px-3" href="#">Back Bay</a><br/> <!-- show maps on side maybe-->
-				<span class="text-dark sidebar-heading d-flex px-3 phone">555-5555</span><br/>
-				
+				<a class="text-dark sidebar-heading d-flex px-3" id="address" href="#">Back Bay</a><br/> <!-- show maps on side maybe-->
+				<span class="text-dark sidebar-heading d-flex px-3" id="phone">555-5555</span><br/>
 				<p class="nav-link">
                   Description
                 </p>
-				<div class="px-3">
-					Blah blah
+				<div class="px-2">
+					This is a restaurant.
 				</div>
             </div>
         </nav>
@@ -206,7 +214,7 @@
 
           <canvas class="my-4 chartjs-render-monitor" id="myChart" width="732" height="308" style="display: block; height: 5px; width: 586px;"></canvas>
 
-          <h2>Reviews</h2>
+          <h2>Reviews</h2> <br/> <button class="btn btn-outline-primary my-2 my-sm-0">Leave a Review</button>
 		  
 		  <div class="my-3 p-3 bg-white rounded box-shadow">
 		  
