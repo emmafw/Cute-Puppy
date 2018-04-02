@@ -1,3 +1,53 @@
+<?php
+	error_reporting(0);
+	require_once('config.php');
+	
+	$conn = mysqli_connect(DBHOST,DBUSER,DBPASS,DBNAME);
+	$restaurant = "restaurant";
+	$review = "review";
+	
+	$error = mysqli_connect_error();
+	if($error != null){
+		$output = "<p>Unable to connect to database</p>".$error;
+		exit($output);
+	}else{
+		//do things
+		$sql0 = "SELECT * FROM " . $restaurant;
+		$sql1 = "SELECT * FROM " . $review;
+		$result0 = mysqli_query($conn,$sql0);
+		$result1 = mysqli_query($conn,$sql1);
+		$entries = array();
+		if($result0->num_rows > 0){
+			$i=0;
+			while($row=$result0->fetch_assoc()){
+				$entries[$i] = array($row["Name"],$row["City"],$row["Tags"]);
+				$i=$i+1;
+			}
+			//echo $entries[3][2];
+		}else{
+			echo "0 results";
+		}
+		if($result1->num_rows>0){
+			$temp = array();
+			while($row1=$result1->fetch_assoc()){
+				$id = $row1["RestaurantID"];
+				if($temp[$id-1]==null){
+					$temp[$id-1] = array();
+				}
+				
+				array_push($temp[$id-1],$row1["MainStars"]);
+				//array_push($entries[$id-1], $row1["MainStars"]);
+			}
+			for($i=0;$i<count($temp);$i=$i+1){
+				$num_reviews = count($temp[$i]);
+				$avg = array_sum($temp[$i])/$num_reviews;
+				array_push($entries[$i],$num_reviews,$avg);
+			}
+			echo $entries[0][4];
+		}
+	}
+	mysqli_close($conn);
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -71,29 +121,45 @@
 		<script type="text/javascript">
 		//will need to get array info from database once we have that
 		var restaurantList = [["Restaurant A","Back Bay",12,"$$","Nut Free, No Soy"],["Restaurant B","Brookline",25,"$$$","No Dairy Free Alternatives, Peanut Free"],["Restaurant C","Central Boston",18,"$","Vegan, All Organic, Dairy Free"],["Restaurant D","South Shore",32,"$","Gluten Free Options"],["Restaurant E","Cambridge",8,"$$","No Allergy Accommodations Listed"]];
+		var restaurantList0 = <?php echo json_encode($entries); ?>; //name, location, tags, number of reviews, avg rating
 		window.onload=function(){
-			//sorting
-			handleChange();
+			//input array data
 			
+			element = document.querySelectorAll("div.insert");
+			
+			for(var i=0; i<restaurantList0.length;i++){
+				var frag = create('<div class="my-3 p-3 bg-white rounded box-shadow"><div class="media text-muted pt-3"><p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray"><strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#">a</a></strong><a class="text-dark city" href="#">b</a><br/><span class="num">c</span> <span class="rate">d</span></br><a class="allergy" href="#">e</a></p></div></div>');
+				element[0].parentElement.insertBefore(frag,element[0].childNodes[0]);
+				
+				
+			}
+			enterData();
+			handleChange();
+		
+			function create(htmlStr) {
+			var frag = document.createDocumentFragment(),
+			temp = document.createElement('div');
+			temp.innerHTML = htmlStr;
+			while (temp.firstChild) {
+				frag.appendChild(temp.firstChild);
+			}
+			return frag;
+			}
 		}
 		
 		function handleChange(){
 			var sortBy = document.getElementsByName('sort');
 			
 			//alert(restaurantList[0][0]);
+			function CompareRatingNum(a, b){
+				if(a[3]<b[3]) return 1;
+				if(a[3]>b[3]) return -1;
+				return 0;
+			}
+			
 			function CompareRating(a, b){
-				if(a[2]<b[2]) return 1;
-				if(a[2]>b[2]) return -1;
-				return 0;
-			}
-			function ComparePriceLow(a, b){
-				if(a[3].length<b[3].length) return -1;
-				if(a[3].length>b[3].length) return 1;
-				return 0;
-			}
-			function ComparePriceHigh(a, b){
-				if(a[3].length<b[3].length) return 1;
-				if(a[3].length>b[3].length) return -1;
+				if(a[4]<b[4]) return 1;
+				if(a[4]>b[4]) return -1;
 				return 0;
 			}
 			
@@ -101,78 +167,44 @@
 				if(sortBy[i].checked){
 					switch(sortBy[i].value){
 						case "1":
-							console.log(sortBy[i].value)
-							restaurantList=restaurantList.sort(CompareRating);
-							console.log(restaurantList)
+							restaurantList0=restaurantList0.sort(CompareRatingNum);
 							break;
 						case "2":
-							//don't have a formula to calculate stars yet; they're hard coded for now
+							restaurantList0=restaurantList0.sort(CompareRating);
 							break;
-						case "3":
-							restaurantList=restaurantList.sort(ComparePriceLow);
-							break;
-						case "4":
-							restaurantList=restaurantList.sort(ComparePriceHigh)
 						default:
 							break;
 					}
 				}
 			}
 			
-			//input array data
-			
-			var restaurants = document.getElementsByClassName("restaurant");
-			for(var i=0; i<restaurants.length;i++){
-				restaurants[i].innerHTML=restaurantList[i][0];
-			}
-			
-			
-			var cities = document.getElementsByClassName("city");
-			for(var i=0;i<cities.length;i++){
-				cities[i].innerHTML=restaurantList[i][1];
-			}
-			
-			
-			var ratings = document.getElementsByClassName("rate");
-			for(var i=0;i<ratings.length;i++){
-				ratings[i].innerHTML=restaurantList[i][2] + " Reviews";
-			}
-			
-			
-			var price = document.getElementsByClassName("price");
-			for(var i=0; i<price.length; i++){
-				price[i].innerHTML=restaurantList[i][3];
-			}
-			
-			
-			var allergies = document.getElementsByClassName("allergy");
-			for(var i=0; i<allergies.length; i++){
-				allergies[i].innerHTML=restaurantList[i][4];
-			}
-			
+			enterData();
 		}
 		
-		//have a value associated with each allergy tag in the database and use that to determine what to remove from the list 
-		//also need to handle when the list is less than 5 i think. i think thats the problem anyway. not sure.
-		/*function sortAllergies(){ //do this whole thing different
-			var allergies= document.getElementsByName('allergy');
-			var temp = [];
-			for(var i=0;i<allergies.length;i++){
-				if(allergies[i].checked){
-					for(var j=0;j<restaurantList.length;j++){
-						if(restaurantList[j][4].includes("Dairy Free")){
-							temp = restaurantList.indexOf(i);
-							restaurantList.splice(temp,1)
-						}
-					}
-				}
+		function enterData(){
+			
+			var restaurants = document.getElementsByClassName("restaurant");
+			var cities = document.getElementsByClassName("city");
+			var ratings = document.getElementsByClassName("rate");
+			var numr = document.getElementsByClassName("num");
+			var allergies = document.getElementsByClassName("allergy");
+			
+			for(var i =0; i<restaurantList0.length;i++){
+				restaurants[i].innerHTML=restaurantList0[i][0];
+				cities[i].innerHTML=restaurantList0[i][1];
+				allergies[i].innerHTML= restaurantList0[i][2];
+				ratings[i].innerHTML=restaurantList0[i][3] + " Review(s)";
+				numr[i].innerHTML = restaurantList0[i][4] + " Stars, ";
 			}
-			console.log(restaurantList);
-			//handleChange();
-		}*/
+		}
+			
+			
+		
 		</script>
   </head>
+  
 <body>
+
 	<div class="d-flex flex-column flex-md-row bg-white border-bottom box-shadow">
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-light p-2">
       <a class="navbar-brand" href="#"><img src="logo_long.png"/></a>
@@ -227,18 +259,6 @@
 								Highest Rated
 							</label>
 						</div>
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="sort" id="low" value="3" onchange="handleChange()">
-								<label class="form-check-label" for="low">
-									$
-								</label>
-							</div>
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="sort" id="high" value="4" onchange="handleChange()">
-								<label class="form-check-label" for="high">
-									$$$
-								</label>
-							</div>
 						</div>
 					</div>
 				</fieldset>
@@ -283,7 +303,7 @@
 				<div class="custom-control custom-checkbox">
 						<input type="checkbox" class="custom-control-input" id="open">
 						<label class="custom-control-label" for="open">Open Now</label>
-					</div>
+				</div>
               </li>
             </ul>
           </div>
@@ -297,59 +317,7 @@
 
           <h2>Search Results</h2>
 		  
-		  <div class="my-3 p-3 bg-white rounded box-shadow">
-		  
-        <div class="media text-muted pt-3">
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
-            <a class="text-dark city" href="#"></a><br/> <!-- show maps on side maybe-->
-			&#9733;&#9733;&#9733;&#9733;&#9733; <span class="rate"></span><br/>
-			<span class="price"></span></br>
-			<a class="allergy" href="#"></a>
-          </p>
-        </div>
-		
-        <div class="media text-muted pt-3">
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
-            <a class="text-dark city" href="#"></a><br/>
-			&#9733;&#9733;&#9733;&#9733;&#9734; <span class="rate"></span><br>
-			<span class="price"></span></br>
-			<a class="allergy" href="#"></a>
-          </p>
-        </div>
-		
-        <div class="media text-muted pt-3">
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
-            <a class="text-dark city" href="#"></a><br/>
-			&#9733;&#9733;&#9734;&#9734;&#9734; <span class="rate"></span><br>
-			<span class="price"></span></br>
-			<a class="allergy" href="#"></a>
-          </p>
-        </div>
-	  
-		<div class="media text-muted pt-3">
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
-            <a class="text-dark city" href="#"></a><br/>
-			&#9733;&#9733;&#9734;&#9734;&#9734; <span class="rate"></span><br>
-			<span class="price"></span></br>
-			<a class="allergy" href="#"></a>
-          </p>
-        </div>
-	  
-		<div class="media text-muted pt-3">
-          <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark"><a class="text-info restaurant" style="font-size:1rem" href="#"></a></strong>
-            <a class="text-dark city" href="#"></a><br/>
-			&#9733;&#9733;&#9734;&#9734;&#9734; <span class="rate"></span><br>
-			<span class="price"></span></br>
-			<a class="allergy" href="#"></a>
-          </p>
-        </div>
-		
-      </div>
+		  <div class="insert"></div>
 	  
      </main>
 		
