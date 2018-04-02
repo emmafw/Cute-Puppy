@@ -1,0 +1,80 @@
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+    <div class="d-flex flex-column flex-md-row bg-white border-bottom box-shadow">
+  	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-light p-2">
+        <a class="navbar-brand" href="#"><img src="logo_long.png"/></a>
+
+        <div class="navbar-collapse">
+          <ul class="navbar-nav px-3 mr-auto p-2">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-primary" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="dropdown-item" href="#">Profile</a>
+                <a class="dropdown-item" href="#">My Reviews</a>
+                <a class="dropdown-item" href="#">Sign Out</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+  	</div>
+
+    <script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+  </script>
+<form method="get" action="/search">
+  <canvas class="my-4 chartjs-render-monitor" width="732" height="308" style="display: block; height: 225px; width: 586px;"></canvas>
+  <div class="container">
+      <div class="form-group restaurants col-md-7">
+          <input type="text" class="form-control" id= "name" placeholder="Restaurant / Type of Food">
+      </div>
+      <div class="form-group location col-md-7">
+          <input type="text" class="form-control" id= "name" placeholder="City, State">
+          <br/> <button class="form-control button" id="name" class="btn btn-default">Search</button>
+      </div>
+  </div>
+</form>
+
+<canvas class="my-4 chartjs-render-monitor" width="732" height="308" style="display: block; height: 155px; width: 586px;"></canvas>
+<img src="image/burger.jpg" alt="burger" height="110" width="120" border="0"/>
+<img src="image/indian.jpg" alt="burger" height="110" width="120" border="0"/>
+<img src="image/pasta.jpg" alt="burger" height="110" width="120" border="0"/>
+<img src="image/katsu.jpeg" alt="burger" height="110" width="120" border="0"/>
+<img src="image/sushi.jpeg" alt="burger" height="110" width="120" border="0"/>
+<img src="image/milkshake.jpg" alt="burger" height="110" width="120" border="0"/>
+<img src="image/salad.jpeg" alt="burger" height="110" width="120" border="0"/>
+<img src="image/chicken_legs.jpg" alt="burger" height="110" width="120" border="0"/>
+<img src="image/vegan.png" alt="burger" height="110" width="120" border="0"/>
+<img src="image/noodles.jpg" alt="burger" height="110" width="120" border="0"/>
+  </body>
+</html>
