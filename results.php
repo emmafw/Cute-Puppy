@@ -48,13 +48,12 @@
 		
 		if($result2->num_rows>0){
 			while($row2=$result2->fetch_assoc()){
-				$allergen = array($row2["Allergy"]); //later change so that it only takes the allergies of the logged in user
+				$allergen = array($row2["Allergy"]); //later change so that it only takes the allergies of the logged in user 
 			}
 		}
 	}
 	mysqli_close($conn);
 ?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -211,7 +210,7 @@
 						<option>Vegan</option>
 						<option>Walnut</option>
 					</datalist>
-					<button class="btn btn-primary btn-sm" id="add" type="button" onclick="addAllergy()">Add</button>
+					<button class="btn btn-primary btn-sm" id="add" type="button" onclick="addAllergy()">Add</button> 
 				</p>
               </li>
             </ul>
@@ -226,11 +225,10 @@
 
           <h2>Search Results</h2>
 		  
-		  <div class="insert">
-			<!-- list of restaurants goes here (implemented with js) -->
-		  </div>
+		  <div class="insert"></div>
 	  
      </main>
+		
 		
 <!-- default bootstrap scripts -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -319,7 +317,6 @@
 		function sortAllergies(allergen){
 			var allergies = document.getElementsByClassName("allergy");
 			var hid = document.getElementsByClassName("hid");
-			
 			for(var i=0;i<allergies.length;i++){
 				if(allergen.checked){
 					if(!allergies[i].innerHTML.toLowerCase().includes(allergen.id.toLowerCase())){
@@ -355,7 +352,7 @@
 				frag.appendChild(temp.firstChild);
 			}
 			return frag;
-		}
+			}
 		
 		</script>
 </body>
