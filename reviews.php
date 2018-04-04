@@ -3,9 +3,6 @@
 	require_once('config.php');
 	
 	$conn = mysqli_connect(DBHOST,DBUSER,DBPASS,DBNAME);
-	//$restaurant = "restaurant";
-	//$review = "review";
-	//$user = "user";
 	
 	$restId = $_GET['restaurantId'];
 	
@@ -15,23 +12,19 @@
 		exit($output);
 	}else{
 		//do things
-		//$sql0 = "SELECT * FROM " . $restaurant;
-		//$sql1 = "SELECT * FROM " . $review;
 		$sql0 = "SELECT * FROM `restaurant`, `review`, `user` WHERE restaurant.ID = review.RestaurantID AND user.UserID = review.UserID";
 		$result0 = mysqli_query($conn,$sql0);
-		//$result1 = mysqli_query($conn,$sql1);
 		$entries = array();
 		$rev = array();
 		if($result0->num_rows > 0){
 			while($row=$result0->fetch_assoc()){
 				if($restId==$row["RestaurantID"]){
-					$entries[] = array($row["FirstName"],$row["Zipcode"],$row["MainStars"],$row["AllergyStars"]); //,$row["Review"]); //review is too long to hold in an array
+					$entries[] = array($row["FirstName"],$row["Zipcode"],$row["MainStars"],$row["AllergyStars"]);
 					$rev[]= array($row["Review"]);
-					$restaurant = array($row["Name"],$row["Address"],$row["City"],$row["Phone"]);
+					$restaurant = array($row["Name"],$row["Address"],$row["City"],$row["Phone"],$row["ZipcodeR"]);
 				}
 			}
 		}
-		//make user id and restaurant show the real names
 		
 	}
 	mysqli_close($conn);
@@ -107,12 +100,9 @@
 	</style>
 		
 		<script type="text/javascript">
-		//will need to get array info from database once we have that
-		var restaurantList = [["User A","Back Bay",5,"What a cool place wow","Nut Free, No Soy"],["User B","Brookline",3,"Not as good as Burger King","No Dairy Free Alternatives, Peanut Free"]];
 		var userList = <?php echo json_encode($entries); ?>; //user id, restaurant id, allergy stars
 		var review = <?php echo json_encode($rev); ?>; 
 		var restaurant = <?php echo json_encode($restaurant); ?>;
-		//fix later to show the username rather than ID
 		window.onload=function(){
 			//sorting
 			element = document.querySelectorAll("div.insert");
@@ -139,7 +129,7 @@
 			var address = document.getElementById("address");
 			var phone = document.getElementById("phone");
 			name.innerHTML = restaurant[0];
-			address.innerHTML = restaurant[1] + ", " + restaurant[2];
+			address.innerHTML = restaurant[1] + ", " + restaurant[2] + " " + restaurant[4];
 			phone.innerHTML = restaurant[3];
 		}
 		
@@ -195,10 +185,10 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
 				<h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-              <span id="name">Restaurant A</span>
+              <span id="name"></span>
 				</h3>
-				<a class="text-dark sidebar-heading d-flex px-3" id="address" href="#">Back Bay</a><br/> <!-- show maps on side maybe-->
-				<span class="text-dark sidebar-heading d-flex px-3" id="phone">555-5555</span><br/>
+				<a class="text-dark sidebar-heading d-flex px-3" id="address" href="#"></a><br/>
+				<span class="text-dark sidebar-heading d-flex px-3" id="phone"></span><br/>
 				<p class="nav-link">
                   Description
                 </p>
@@ -223,7 +213,8 @@
       </div>
 	  
      </main>
-		
+	 
+<!-- default bootstrap scripts -->		
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
