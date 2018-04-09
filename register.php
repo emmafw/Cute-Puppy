@@ -33,6 +33,7 @@
 		$sql2 = "INSERT INTO `User`(`UserID`, `FirstName`, `LastName`, `Email`, `Zipcode`, `Password`, `Allergy`) VALUES ('$UserID', '$firstName', '$lastName', '$email', '$zip', '$password', '$allergy')";
 		$result2 = $pdo->query($sql2);
 		$pdo = null;
+		header('Location: foodlergy.html');
 	}
 	catch(PDOException $e){
 		print "Error!: ".$e->getMessage()."<br/>";
