@@ -27,6 +27,8 @@
 		}
 
 		$pdo = null;
+
+		header('Location: foodlergy.html');
 	}
 	catch(PDOException $e){
 		print "Error!: ".$e->getMessage()."<br/>";
