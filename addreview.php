@@ -1,5 +1,5 @@
 <?php
-require_once("config.php");
+require_once("config0.php");
 require_once("addreview.html");
 	try{
 		$connString = "mysql:host=" . DBHOST . ";dbname=" . DBNAME;
