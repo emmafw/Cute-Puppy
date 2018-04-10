@@ -1,6 +1,6 @@
 <?php
 	error_reporting(0);
-	require_once("config0.php");
+	require_once("config.php");
 	require_once("reviews.html");
 	
 	try{
