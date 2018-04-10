@@ -10,11 +10,8 @@
 		$pdo = new PDO($connString, $user, $pass);
 
 		$name = $_POST["Type"];
-		$keyword = $_POST["Keyword"];
 		$location = $_POST["Location"];
 		$allergen = $_POST["allergen"];
-
-		echo var_dump($allergen);
 		
 		$sql = "SELECT * FROM Restaurant WHERE ";
 
@@ -31,23 +28,25 @@
 
 		if ($name != ""){
 			if ($count == 0){
-				$sql = $sql."Restaurant.Name like '%$ name%' ";
+				$sql = $sql."Restaurant.Name like '%$name%' OR Restaurant.Tags like '%$name%' ";
 				$count++;
 			}
 			else{
-				$sql = $sql."AND Restaurant.Name like '%$name%' ";
+				$sql = $sql."AND Restaurant.Name like '%$name%' OR Restaurant.Tags like '%$name%' ";
 				$count++;
 			}
 		}
 
-		if ($keyword != ""){
-			if ($count == 0){
-				$sql = $sql."Restaurant.Tags like '%$keyword%' ";
-				$count++;
-			}
-			else{
-				$sql = $sql."AND Restaurant.Tags like '%$keyword%' ";
-				$count++;
+		if (!empty($allergen)){
+			foreach ($allergen as &$value){
+				if ($count == 0){
+					$sql = $sql."Restaurant.Allergens like '%$value%' ";
+					$count++;
+				}
+				else{
+					$sql = $sql."AND Restaurant.Allergens like '%$value%' ";
+					$count++;
+				}
 			}
 		}
 
