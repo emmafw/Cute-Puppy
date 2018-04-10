@@ -19,6 +19,18 @@
 			body {
 			font-size: .875rem;
 			}
+
+			a{
+				color: white;
+			}
+
+			a.hover{
+				color: white;
+			}
+
+			a.active{
+				color: white;
+			}
 	/*
 	* Sidebar
 	*/
@@ -115,13 +127,11 @@
           <h2>Reviews</h2>
       </div>
       <div class="col float-right">
+      	<button class="btn btn-primary float-right">
       	<?php
-      		echo "<form class=\"float-right\" action=\"addreview.html\" width=\"125px\" float=\"right\" style=\"float: right\">";
+      		echo "<a href='addreview.php?restaurant=".$row[1]."'>Add a Review</a>";
       	?>
-                <div class="form-group">
-                    <input class="btn btn-primary btn-block" name = "addreview" type="submit" value="Add a Review"/>
-                </div>
-            </form>
+      </button>
         </div>
     </div>
 
@@ -140,8 +150,9 @@
 						$pdo = new PDO($connString, $user, $pass);
 
 						$Restaurant = $_GET['restaurant'];
+
 		
-						$sql = "SELECT * FROM Restaurant INNER JOIN Review ON Restaurant.ID = Review.RestaurantID INNER JOIN User ON Review.UserID = User.UserID WHERE Restaurant.Name like '%$Restaurant% ORDER BY Review.ReviewID DESC';";
+						$sql = "SELECT * FROM Restaurant INNER JOIN Review ON Restaurant.ID = Review.RestaurantID INNER JOIN User ON Review.UserID = User.UserID WHERE Restaurant.Name like '%$Restaurant%';";
 
 						$result = $pdo->query($sql);
 		  				while($row=$result->fetch()){
