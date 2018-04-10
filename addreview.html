@@ -173,7 +173,26 @@
 
             <h1>Add a Review</h1>
 
-        <form action="addreview.php" method="post">
+            <?php
+            require_once("config.php");
+            require_once("addreview.html");
+            try{
+                $connString = "mysql:host=" . DBHOST . ";dbname=" . DBNAME;
+                $user = DBUSER;
+                $pass = DBPASS;
+                $max = 0;
+
+                $pdo = new PDO($connString, $user, $pass);
+
+                $restaurant = $_GET['restaurant'];
+
+                echo "<form action=\"postreview.php?restaurant=".$restaurant."\" method=\"post\">"; 
+              }
+              catch(PDOException $e){
+              print "Error!: ".$e->getMessage()."<br/>";
+              die();
+            }
+          ?>
           <p>
             <p>Your overall experience:
             <div class="stars">
@@ -209,7 +228,7 @@
             </div>
           </p>
           <div id="reviewBody">
-            <textarea name="AllergyText" rows="7" cols="40" placeholder="How was your overall experience? Was the restaraunt accomindating to your allergy?" maxlength="5000" style="height= 300px;"></textarea><br>
+            <textarea name="AllergyText" rows="7" cols="40" placeholder="How was your overall experience? Was the restaraunt accomindating to your allergy? What did you have to eat?" maxlength="5000" style="height= 300px;"></textarea><br>
           </div>
             <div id ="postReview">
             <input class="btn btn-primary" type="submit" value="Post Review">
