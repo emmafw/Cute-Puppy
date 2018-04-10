@@ -28,35 +28,35 @@
         <div class="container">
             <div id="auth-form">
                 <h1><img src="logo.png" alt="logo"></h1>
-                <form action="search.php" method="post">
+                <form action="results.php" method="post">
                     <div class="form-group">
-                        <input type="text" placeholder="Restaurant Name or Keyword" class="form-control" id="name" />
+                        <input type="text" placeholder="Restaurant Name or Keyword" class="form-control" name="Type"/>
                     </div>
 
                     <div class="form-group">
-                        <input type="text" placeholder="Location" class="form-control" id="location" />
+                        <input type="text" placeholder="City" class="form-control" name="Location"/>
                     </div>
 
                     <div class="form-group row">
-                        <div class="col"><label><input type="checkbox" id="eggs" class="form-control"> Eggs</label></div>
-                        <div class="col"><label><input type="checkbox" id="wheat" class="form-control"> Wheat</label></div>
-                        <div class="col"><label><input type="checkbox" id="peanuts" class="form-control"> Peanuts</label></div>
+                        <div class="col"><label><input type="checkbox" name="allergen[]" class="form-control" value="eggs"> Eggs</label></div>
+                        <div class="col"><label><input type="checkbox" name="allergen[]" class="form-control" value="wheat"> Wheat</label></div>
+                        <div class="col"><label><input type="checkbox" name="allergen[]" class="form-control" value="peanuts"> Peanuts</label></div>
+                    </div>
+
+                     <div class="form-group row">
+                        <div class="col"><label><input type="checkbox" name="allergen[]" class="form-control" value="shellfish"> Shellfish</label></div>
+                        <div class="col"><label><input type="checkbox" name="allergen[]" class="form-control" value="tree nuts"> Tree Nuts</label></div>
                     </div>
 
                     <div class="form-group row">
-                        <div class="col"><label><input type="checkbox" id="fish" class="form-control"> Fish</label></div>
-                        <div class="col"><label><input type="checkbox" id="dairy" class="form-control"> Dairy</label></div>
-                        <div class="col"><label><input type="checkbox" id="soy" class="form-control"> Soy</label></div>
+                        <div class="col"><label><input type="checkbox" name="allergen[]" class="form-control" value="fish"> Fish</label></div>
+                        <div class="col"><label><input type="checkbox" name="allergen[]" class="form-control" value="dairy"> Dairy</label></div>
+                        <div class="col"><label><input type="checkbox" name="allergen[]" class="form-control" value="soy"> Soy</label></div>
                       </div>
-
-                    <div class="form-group row">
-                        <div class="col"><label><input type="checkbox" id="shellfish" class="form-control"> Shellfish</label></div>
-                        <div class="col"><label><input type="checkbox" id="treenuts" class="form-control"> Tree Nuts</label></div>
-                    </div>
 
                     <input class="btn btn-primary btn-block" name="submit" type="submit" value="Search"/>
                 </form>
             </div>
         </div>
       </body>
-      </html>
+</html>
