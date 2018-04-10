@@ -1,6 +1,8 @@
 <?php
+	error_reporting(0);
 	require_once("config.php");
 	require_once("reviews.html");
+	
 	try{
 		$connString = "mysql:host=" . DBHOST . ";dbname=" . DBNAME;
 		$user = DBUSER;

@@ -66,28 +66,28 @@
 			<li class="nav-item px-3">
 				<fieldset class="form-group" id="allergies">
 					<div class="row col-sm-10">
-						<input type="checkbox"><label id = "allergyLabel">Peanuts</label></input>
+						<input type="checkbox" id="Peanuts" onclick="sortAllergies('Peanuts')"><label id = "allergyLabel">Peanuts</label></input>
 					</div>
 					<div class="row col-sm-10">
-						<input type="checkbox"><label id = "allergyLabel"> Tree Nuts</label></input>
+						<input type="checkbox"  id="Tree Nuts" onclick="sortAllergies('Tree Nuts')"><label id = "allergyLabel"> Tree Nuts</label></input>
 					</div>
 					<div class="row col-sm-10">
-						<input type="checkbox"><label id = "allergyLabel"> Dairy</label></input>
+						<input type="checkbox"  id="Dairy" onclick="sortAllergies('Dairy')"><label id = "allergyLabel"> Dairy</label></input>
 					</div>
 					<div class="row col-sm-10">
-						<input type="checkbox"><label id = "allergyLabel"> Wheat</label></input>
+						<input type="checkbox"  id="Wheat" onclick="sortAllergies('Wheat')"><label id = "allergyLabel"> Wheat</label></input>
 					</div>
 					<div class="row col-sm-10">
-						<input type="checkbox"><label id = "allergyLabel"> Shellfish</label></input>
+						<input type="checkbox"  id="Shellfish" onclick="sortAllergies('Shellfish')"><label id = "allergyLabel"> Shellfish</label></input>
 					</div>
 					<div class="row col-sm-10">
-						<input type="checkbox"><label id = "allergyLabel"> Soy</label></input>
+						<input type="checkbox"  id="Soy" onclick="sortAllergies('Soy')"><label id = "allergyLabel"> Soy</label></input>
 					</div>
 					<div class="row col-sm-10">
-						<input type="checkbox"><label id = "allergyLabel"> Fish</label></input>
+						<input type="checkbox"  id="Fish" onclick="sortAllergies('Fish')"><label id = "allergyLabel"> Fish</label></input>
 					</div>
 					<div class="row col-sm-10">
-						<input type="checkbox"><label id = "allergyLabel"> Eggs</label></input>
+						<input type="checkbox"  id="Eggs" onclick="sortAllergies('Eggs')"><label id = "allergyLabel"> Eggs</label></input>
 					</div>
 				</fieldset>
 			</li>
@@ -160,7 +160,7 @@
 
 			$row2 = $result2->fetch();
 
-			echo "<strong class=\"d-block text-gray-dark\"><a href='reviews.php?restaurant=".$row[1]."'>".$row[1]."</a></strong>";
+			echo "<div class=\"hid\"><strong class=\"d-block text-gray-dark\"><a href='reviews.php?restaurant=".$row[1]."'>".$row[1]."</a></strong>";
 			$numOfStars = $row2[1]/$row2[0];
 			$stars = "";
 		  	for($i = 0; $i<$numOfStars; $i++){
@@ -169,13 +169,16 @@
 		  	echo "Average Rating: ".$stars."<br>";
 			echo "<p>".$row[4].", ".$row[5]."</p>";
 			echo "<p>Tags: ".$row[8]."</p>";
-			echo "<p>Allergens: ".$row[9]."</p>";
+			echo "<p>Allergens: <div class=\"allergy\">".$row[9]."</div></p>";
+			echo "</div>";
 			echo "<hr>";
+			
 		}
 
 		$pdo = null;
 
 		//header('Location: results.php');
+		
 	}
 	catch(PDOException $e){
 		print "Error!: ".$e->getMessage()."<br/>";
@@ -186,6 +189,29 @@
  </div>
 </div>
 </div>
+<script type="text/javascript">
+		window.onload=function(){
+			
+		}
+		
+		function sortAllergies(allergen){
+			var allergies = document.getElementsByClassName("allergy");
+			var hid = document.getElementsByClassName("hid");
+			var checkbox = document.getElementById(allergen);
+			for(var i=0;i<allergies.length;i++){
+				if(checkbox.checked){
+					if(!allergies[i].innerHTML.toLowerCase().includes(allergen.toLowerCase())){
+						hid[i].style.display = "none";
+					}
+				}else{
+					hid[i].style.display = "block";
+				}
+				
+			}
+				
+		}
+		
+		</script>
 </body>
 </html>
 
